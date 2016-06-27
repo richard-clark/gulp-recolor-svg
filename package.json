@@ -19,6 +19,7 @@
   ],
   "main": "./lib/RecolorSvg.js",
   "name": "gulp-recolor-svg",
+  "repository": "richard-clark/gulp-recolor-svgs",
   "scripts": {
     "clean": "rm -r lib/",
     "prepublish": "./node_modules/coffee-script/bin/coffee -c -o lib/ src/",
