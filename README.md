@@ -1,10 +1,10 @@
-# Recolor SVG
+# ``gulp-recolor-svg``
 
 A gulp package for replacing colors within SVGs.
 
 ## Example
 
-Consider the following SVG—named ``plus.svg``, it represents a blue "+" symbol:
+Let's say I have the following SVG (named ``plus.svg``), a blue "+" symbol:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -17,54 +17,48 @@ Consider the following SVG—named ``plus.svg``, it represents a blue "+" symbol
 
 ### Simple Recolor
 
-The following is an example of creating a red version of this icon:
+The simplest use case for this package is replacing one or more colors in an SVG with different colors.
 
-```coffeescript
-Color = require("color")
-gulp = require("gulp")
-RecolorSvg = require("./RecolorSvg")
+This gulpfile will generate a new SVG, `plus--red.svg`, containing a red plus symbol in place of the blue symbol:
 
-gulp.task "default", () ->
+```javascript
+var Color = require("color");
+var gulp = require("gulp");
+var RecolorSvg = require("gulp-recolor-svg");
+
+gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.Replace(
-			[ RecolorSvg.ColorMatcher(Color("0000FF")) ],
-			[ Color("FF0000") ]))
-		.pipe(gulp.dest("plus--red.svg"))
+			[ RecolorSvg.ColorMatcher(Color("blue")) ],
+			[ Color("red") ]
+		))
+		.pipe(gulp.dest("plus--red.svg"));
+});
 ```
-
-When ``gulp`` is run, it will generate a new SVG, ``plus--reg.svg``, containing a red plus icon in place of the blue SVG.
 
 ### Generating Multiple Variants
 
-Recolor SVG also provides another function for generating multiple variants from a single input. For example, If we wish to use the plus icon as the background of an image, we can generate varints for hover, active, focus, and disabled button states. We can do this with the following gulp task:
+This package can also be used to easily generate multiple variants of an input image. For example, if I'm using an SVG as the background of a `<button>`, I can easily different color variants for the button's hover, active, focus, and disabled states.
 
-```coffeescript
-Color = require("color")
-gulp = require("gulp")
-RecolorSvg = require("./RecolorSvg")
+Given ``plus.svg``, this gulpfile will generate four SVGs: ``plus--hover.svg``, ``plus--active.svg``, ``plus--focus.svg``, and ``plus--disabled.svg``, each with a different colored plus symbol:
 
-gulp.task "default", () ->
+```javascript
+var Color = require("color");
+var gulp = require("gulp");
+var RecolorSvg = require("gulp-recolor-svg");
+
+gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.GenerateVariants(
-			[ RecolorSvg.ColorMatcher(Color("#0000FF")) ],
-			[
-					suffix: "--hover"
-					colors: [ Color("red") ]
-				,
-					suffix: "--active"
-					colors: [ Color("red").darken(0.1) ]
-				,
-					suffix: "--focus"
-					colors: [ Color("cyan") ]
-				,
-					suffix: "--disabled"
-					colors: [ Color("gainsboro") ]
-			]
+			[ RecolorSvg.ColorMatcher(Color("blue")) ],
+			[ { suffix: "--hover", colors: [ Color("red") ] },
+				{ suffix: "--active", colors: [ Color("red").darken(0.1) ] },
+				{ suffix: "--focus", colors: [ Color("cyan") ] },
+				{ suffix: "--disabled", colors: [ Color("#ccc") ] } ]
 		))
-		.pipe(gulp.dest("./"))
+		.pipe(gulp.dest("./"));
+});
 ```
-
-When this task is run, it will generate four SVGs: ``plus--hover.svg``, ``plus--active.svg``, ``plus--focus.svg``, and ``plus--disabled.svg``, each with a different color.
 
 ## API
 
@@ -80,13 +74,13 @@ Colors are compared using the [CIE76 color difference algorithm](https://en.wiki
 
 Usage:
 
-```
-{ Color, ColorMatcher } = require("./RecolorSvg")
+```javascript
+var RecolorSvg = require("gulp-recolor-svg");
 
-matcher = RecolorSvg.ColorMatcher(Color("red"), 2)
+matcher = RecolorSvg.ColorMatcher(Color("red"), 2);
 
-matcher(Color("red").lighten(0.02)) # returns true
-matcher(Color("blue")) # returns false
+matcher(RecolorSvg.Color("red").lighten(0.02)); # returns true
+matcher(RecolorSvg.Color("blue")); # returns false
 ```
 
 ### GenerateVariants(matcherFunctions, variants)
