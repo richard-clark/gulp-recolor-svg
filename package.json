@@ -22,7 +22,14 @@
   "name": "gulp-recolor-svg",
   "scripts": {
     "clean": "rm -r lib/",
-    "compile": "coffee -c -o lib/ src/"
+    "compile": "coffee -c -o lib/ src/",
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*Spec.coffee"
   },
   "version": "1.0.0",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.10.0",
+    "gulp": "^3.9.1",
+    "mocha": "^2.5.3"
+  }
 }
