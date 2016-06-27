@@ -19,13 +19,13 @@
   ],
   "main": "./lib/RecolorSvg.js",
   "name": "gulp-recolor-svg",
-  "repository": "richard-clark/gulp-recolor-svgs",
+  "repository": "richard-clark/gulp-recolor-svg",
   "scripts": {
     "clean": "rm -r lib/",
     "prepublish": "./node_modules/coffee-script/bin/coffee -c -o lib/ src/",
     "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*Spec.coffee"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.10.0",

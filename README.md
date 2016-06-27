@@ -103,7 +103,7 @@ Arguments:
 
 - ``replacementColors`` is an array of replacement colors. The length of this array should match the length of ``matcherFunctions``. For each function of ``matcherFunction``, if the function returns a ``true`` value, that color will be replaced by the color at the corresponding index from ``replacementColors``.
 
-See the [Simple Recolor] example.
+See the [Simple Recolor](#simple-recolor) example.
 
 ## Testing
 
