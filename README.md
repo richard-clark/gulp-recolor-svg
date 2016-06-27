@@ -1,4 +1,4 @@
-# ``gulp-recolor-svg``
+# gulp-recolor-svg
 
 A gulp package for replacing colors within SVGs.
 
