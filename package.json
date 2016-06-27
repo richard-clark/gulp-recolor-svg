@@ -1,5 +1,5 @@
 {
-  "author": "",
+  "author": "Richard Clark",
   "dependencies": {
     "cheerio": "^0.20.0",
     "color": "^0.11.3",
@@ -21,7 +21,7 @@
   "name": "gulp-recolor-svg",
   "scripts": {
     "clean": "rm -r lib/",
-    "compile": "coffee -c -o lib/ src/",
+    "prepublish": "./node_modules/coffee-script/bin/coffee -c -o lib/ src/",
     "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*Spec.coffee"
   },
   "version": "1.0.0",
