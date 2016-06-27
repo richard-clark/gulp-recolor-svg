@@ -1,6 +1,5 @@
 Color = require("color")
 ColorMatcher = require("./ColorMatcher")
-gutil = require("gulp-util")
 path = require("path")
 replaceColors = require("./replaceColors")
 through = require("through2")
@@ -10,7 +9,7 @@ Replace = (colorMatchers, colors) ->
   through.obj (file, encoding, callback) ->
     data = file.contents
     outputData = replaceColors(data, colorMatchers, colors)
-    outputFile = new gutil.File
+    outputFile = new File
       cwd: file.cwd
       base: file.base
       path: file.path
@@ -29,7 +28,7 @@ GenerateVariants = (colorMatchers, variants=[]) ->
       fileName = baseName.substr(0, baseName.length - extension.length)
       fileNameWithSuffix = fileName + variant.suffix + extension
 
-      outputFile = new gutil.File
+      outputFile = new File
         cwd: file.cwd
         base: file.base
         path: path.join(path.dirname(file.path), fileNameWithSuffix)
