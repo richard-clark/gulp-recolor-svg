@@ -1,0 +1,28 @@
+{
+  "author": "",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "color": "^0.11.3",
+    "color-convert": "^1.3.1",
+    "css": "^2.2.1",
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.1",
+    "vinyl": "^1.1.1"
+  },
+  "description": "Gulp plugin for recoloring SVGs",
+  "license": "MIT",
+  "keywords": [
+    "color",
+    "gulp",
+    "gulpplugin",
+    "recolor",
+    "svg"
+  ],
+  "main": "./lib/RecolorSvg.js",
+  "name": "gulp-recolor-svg",
+  "scripts": {
+    "clean": "rm -r lib/",
+    "compile": "coffee -c -o lib/ src/"
+  },
+  "version": "1.0.0",
+}
