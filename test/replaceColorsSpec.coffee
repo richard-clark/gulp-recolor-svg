@@ -34,6 +34,19 @@ describe "replaceColors", () ->
     actualOutput = replaceColors(input, [ identity(true) ], [ new Color("blue") ])
     expect(actualOutput).to.equal(expectedOutput)
 
+  it "should replace fill and stroke properties in a style attribute", () ->
+    input = wrapAsSvg('<path style="stroke:red; fill: red; "/>')
+    expectedOutput = wrapAsSvg('<path style="stroke:#0000FF;fill:#0000FF;"/>')
+    actualOutput = replaceColors(input, [ identity(true) ], [ new Color("blue") ])
+    expect(actualOutput).to.equal(expectedOutput)
+
+  it "should replace fill and stroke properties in a style attribute without a
+  leading semicolon", () ->
+    input = wrapAsSvg('<path style="stroke:red; fill: red "/>')
+    expectedOutput = wrapAsSvg('<path style="stroke:#0000FF;fill:#0000FF;"/>')
+    actualOutput = replaceColors(input, [ identity(true) ], [ new Color("blue") ])
+    expect(actualOutput).to.equal(expectedOutput)
+
   it "should replace a fill property in a style sheet", () ->
     input = wrapAsSvg('<style>path{fill:red}</style>')
     expectedStylesheet = "path{fill:#0000FF;}"

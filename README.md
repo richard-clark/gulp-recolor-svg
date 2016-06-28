@@ -121,4 +121,12 @@ npm test
 
 ## Limitations
 
-Currently, gulp-recolor-svg will change the value of ``fill`` and ``stroke`` properties set as attributes on SVG elements, or in embedded stylesheets. It does not currently work with other properties, nor does it currently support transparency.
+Currently, only `fill` and `stroke` properties are supported.
+
+These properties will be replaced if they're set in any of the following ways:
+
+- As attributes (`<path fill="red" stroke="blue" />`)
+- As properties in a `style` attribute (`<path style="fill: red; stroke: blue;"`)
+- In a stylesheet (`path { fill: red; stroke: blue }`)
+
+This package only works with solid colors; colors with transparency aren't supported.
