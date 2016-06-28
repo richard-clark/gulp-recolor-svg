@@ -3,6 +3,7 @@ Color = require("color")
 css = require("css")
 
 INLINE_PROPERTY_MATCHER = /^\s*([^:\s]+)\s*:\s*(.*?)\s*$/
+SPECIAL_PAINT_TYPES = ["none", "currentcolor", "inherit"]
 
 parseInlineStyleSheet = (inlineStyle) ->
   inlineStyle.split(";")
@@ -28,15 +29,17 @@ module.exports = (stringData, matchers, destColors) ->
   propertiesToReplace = ["fill", "stroke"]
 
   getNewColor = (stringColorValue) ->
-    if stringColorValue isnt "none"
-      color = Color(stringColorValue)
-      outputColor = stringColorValue
+    if stringColorValue.toLowerCase() in SPECIAL_PAINT_TYPES
+      return stringColorValue
 
-      for matcher, index in matchers
-        if matcher(color)
-          outputColor = destColors[index].hexString()
+    color = Color(stringColorValue)
+    outputColor = stringColorValue
 
-      return outputColor
+    for matcher, index in matchers
+      if matcher(color)
+        outputColor = destColors[index].hexString()
+
+    return outputColor
 
   replacePropertiesInDeclarations = (declarations) ->
     for declaration in declarations when declaration.property in propertiesToReplace

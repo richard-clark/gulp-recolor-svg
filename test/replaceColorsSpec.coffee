@@ -16,9 +16,14 @@ extractStylesheet = (input) ->
 
 describe "replaceColors", () ->
 
-  it "should not replace a fill attribute if the matcher returns false", () ->
-    input = wrapAsSvg('<path fill="red"/>')
-    expectedOutput = wrapAsSvg('<path fill="red"/>')
+  it "should not modify 'none', 'currentColor', or 'inherit' values", () ->
+    input = wrapAsSvg('<path style="fill:none;stroke:currentcolor;"/>')
+    expectedOutput = wrapAsSvg('<path style="fill:none;stroke:currentcolor;"/>')
+    actualOutput = replaceColors(input, [ identity(false) ], [ new Color("blue") ])
+    expect(actualOutput).to.equal(expectedOutput)
+
+    input = wrapAsSvg('<path style="fill:inherit;"/>')
+    expectedOutput = wrapAsSvg('<path style="fill:inherit;"/>')
     actualOutput = replaceColors(input, [ identity(false) ], [ new Color("blue") ])
     expect(actualOutput).to.equal(expectedOutput)
 
