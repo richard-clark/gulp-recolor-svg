@@ -25,6 +25,7 @@ This gulpfile will generate a new SVG, `plus--red.svg`, containing a red plus sy
 var Color = require("color");
 var gulp = require("gulp");
 var RecolorSvg = require("gulp-recolor-svg");
+var rename = require("gulp-rename");
 
 gulp.task("default", function(){
 	gulp.src("plus.svg")
@@ -32,7 +33,10 @@ gulp.task("default", function(){
 			[ RecolorSvg.ColorMatcher(Color("blue")) ],
 			[ Color("red") ]
 		))
-		.pipe(gulp.dest("plus--red.svg"));
+		.pipe(rename({
+			suffix: "--red"
+		}))
+		.pipe(gulp.dest("./"));
 });
 ```
 
