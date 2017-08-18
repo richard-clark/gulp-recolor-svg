@@ -26,19 +26,21 @@ module.exports = (stringData, matchers, destColors) ->
   $ = cheerio.load stringData,
     xmlMode: true
 
-  propertiesToReplace = ["fill", "stroke"]
+  propertiesToReplace = ["fill", "stroke", "stop-color"]
 
   getNewColor = (stringColorValue) ->
-    if stringColorValue.toLowerCase() in SPECIAL_PAINT_TYPES
-      return stringColorValue
+    if stringColorValue.indexOf('url') == -1
+      if stringColorValue.toLowerCase() in SPECIAL_PAINT_TYPES
+        return stringColorValue
 
-    color = Color(stringColorValue)
-    outputColor = stringColorValue
+      color = Color(stringColorValue)
+      outputColor = stringColorValue
 
-    for matcher, index in matchers
-      if matcher(color)
-        outputColor = destColors[index].hexString()
-
+      for matcher, index in matchers
+        if matcher(color)
+          outputColor = destColors[index].hexString()
+    else
+      outputColor = stringColorValue
     return outputColor
 
   replacePropertiesInDeclarations = (declarations) ->
