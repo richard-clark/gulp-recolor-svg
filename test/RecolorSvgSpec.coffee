@@ -6,9 +6,9 @@ wrapAsSvg = (text) ->
   '<?xml version="1.0" encoding="utf-8"?><svg>' + text + '</svg>'
 
 SimpleMatcher = (firstColor) ->
-  [r1, g1, b1] = firstColor.rgbArray()
+  [r1, g1, b1] = firstColor.rgb().array()
   (secondColor) ->
-    [r2, g2, b2] = secondColor.rgbArray()
+    [r2, g2, b2] = secondColor.rgb().array()
     return r1 is r2 and g1 is g2 and b1 is b2
 
 getStreamOutput = (stream, callback) ->

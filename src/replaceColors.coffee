@@ -12,19 +12,19 @@ parseInlineStyleSheet = (inlineStyle) ->
     .filter (match) ->
       match?
     .map ([..., property, value]) ->
-      {property, value}
+      { property, value }
 
 stringifyInlineStyleSheet = (declarations) ->
   return "" unless declarations.length > 0
 
-  declarations.map ({property, value}) ->
+  declarations.map ({ property, value }) ->
     "#{property}:#{value}"
   .concat("") # For trailing semicolon.
   .join(";")
 
 module.exports = (stringData, matchers, destColors) ->
   $ = cheerio.load stringData,
-    xmlMode: true
+    { xmlMode: true }
 
   propertiesToReplace = ["fill", "stroke"]
 
@@ -37,7 +37,7 @@ module.exports = (stringData, matchers, destColors) ->
 
     for matcher, index in matchers
       if matcher(color)
-        outputColor = destColors[index].hexString()
+        outputColor = destColors[index].hex()
 
     return outputColor
 
@@ -51,7 +51,7 @@ module.exports = (stringData, matchers, destColors) ->
     for rule in data.stylesheet.rules
       replacePropertiesInDeclarations(rule.declarations)
     outputData = css.stringify data,
-      compress: true
+      { compress: true }
     element.text(outputData)
 
   $("style").each (index, element) ->
