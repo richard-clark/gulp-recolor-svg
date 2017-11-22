@@ -22,16 +22,15 @@ The simplest use case for this package is replacing one or more colors in an SVG
 This gulpfile will generate a new SVG, `plus--red.svg`, containing a red plus symbol in place of the blue symbol:
 
 ```javascript
-var Color = require("color");
-var gulp = require("gulp");
-var RecolorSvg = require("gulp-recolor-svg");
-var rename = require("gulp-rename");
+const gulp = require("gulp");
+const RecolorSvg = require("gulp-recolor-svg");
+const rename = require("gulp-rename");
 
 gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.Replace(
-			[ RecolorSvg.ColorMatcher(Color("blue")) ],
-			[ Color("red") ]
+			[ RecolorSvg.ColorMatcher("blue") ],
+			[ "red" ]
 		))
 		.pipe(rename({
 			suffix: "--red"
@@ -47,18 +46,17 @@ This package can also be used to easily generate multiple variants of an input i
 Given ``plus.svg``, this gulpfile will generate four SVGs: ``plus--hover.svg``, ``plus--active.svg``, ``plus--focus.svg``, and ``plus--disabled.svg``, each with a different colored plus symbol:
 
 ```javascript
-var Color = require("color");
-var gulp = require("gulp");
-var RecolorSvg = require("gulp-recolor-svg");
+const gulp = require("gulp");
+const RecolorSvg = require("gulp-recolor-svg");
 
 gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.GenerateVariants(
-			[ RecolorSvg.ColorMatcher(Color("blue")) ],
-			[ { suffix: "--hover", colors: [ Color("red") ] },
-				{ suffix: "--active", colors: [ Color("red").darken(0.1) ] },
-				{ suffix: "--focus", colors: [ Color("cyan") ] },
-				{ suffix: "--disabled", colors: [ Color("#ccc") ] } ]
+			[ RecolorSvg.ColorMatcher("blue") ],
+			[ { suffix: "--hover", colors: [ "red" ] },
+				{ suffix: "--active", colors: [ "yellow" ] },
+				{ suffix: "--focus", colors: [ "cyan" ] },
+				{ suffix: "--disabled", colors: [ "#ccc" ] } ]
 		))
 		.pipe(gulp.dest("./"));
 });
@@ -70,6 +68,10 @@ gulp.task("default", function(){
 
 This is just a wrapper around the [color](https://github.com/qix-/color) package for Node, which provides utilities for parsing and serializing CSS colors.
 
+RecolorSvg exposes Color module, however after API and documentation issues
+caused confusion and the library to 'not work', the need to pass in color objects
+i.e. Color("red"), was removed and now you simply pass in a valid CSS color value.
+
 ### ColorMatcher(colorToMatch, [maxDifference=0.1])
 
 This returns a function that, when invoked with a color, will return a boolean value indicating whether the similarity of this color to the color used when instantiating the matcher is within the specified threshold.
@@ -79,12 +81,17 @@ Colors are compared using the [CIE76 color difference algorithm](https://en.wiki
 Usage:
 
 ```javascript
-var RecolorSvg = require("gulp-recolor-svg");
+const RecolorSvg = require("gulp-recolor-svg");
+const Color = require('color');
 
-matcher = RecolorSvg.ColorMatcher(Color("red"), 2);
+// You can use your own version of Color outside the library, just be sure
+// to convert it back to a valid CSS color value, like hex.
+const lighterRed = Color("red").lighten(0.02).hex();
 
-matcher(RecolorSvg.Color("red").lighten(0.02)); # returns true
-matcher(RecolorSvg.Color("blue")); # returns false
+matcher = RecolorSvg.ColorMatcher("red", 2);
+
+matcher(lighterRed); # returns true
+matcher("blue"); # returns false
 ```
 
 ### GenerateVariants(matcherFunctions, variants)

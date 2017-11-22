@@ -5,16 +5,16 @@ ColorMatcher = require("../src/RecolorSvg").ColorMatcher
 describe "ColorMatcher", () ->
 
   it "should return truthy for two identical colors", () ->
-    matcher = ColorMatcher(Color("blue"))
-    expect(matcher(Color("blue"))).to.be.true
+    matcher = ColorMatcher("blue")
+    expect(matcher("blue")).to.be.true
 
   it "should return falsy for two different colors", () ->
-    matcher = ColorMatcher(Color("white"))
-    expect(matcher(Color("black"))).to.be.false
+    matcher = ColorMatcher("white")
+    expect(matcher("black")).to.be.false
 
   it "should respect the maxDifference property, if specified", () ->
-    firstColor = Color("#888")
-    secondColor = Color("#999")
+    firstColor = "#888"
+    secondColor = "#999"
 
     strictMatcher = ColorMatcher(firstColor, 0)
     expect(strictMatcher(secondColor)).to.be.false
