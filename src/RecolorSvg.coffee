@@ -17,7 +17,7 @@ Replace = (colorMatchers, colors) ->
     @push(outputFile)
     callback()
 
-GenerateVariants = (colorMatchers, variants=[]) ->
+GenerateVariants = (colorMatchers, variants = []) ->
   through.obj (file, encoding, callback) ->
     for variant in variants
       data = file.contents
@@ -28,11 +28,12 @@ GenerateVariants = (colorMatchers, variants=[]) ->
       fileName = baseName.substr(0, baseName.length - extension.length)
       fileNameWithSuffix = fileName + variant.suffix + extension
 
-      outputFile = new File
+      outputFile = new File {
         cwd: file.cwd
         base: file.base
         path: path.join(path.dirname(file.path), fileNameWithSuffix)
         contents: new Buffer(outputData, "utf8")
+      }
       @push(outputFile)
 
     callback()
