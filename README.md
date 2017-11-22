@@ -22,7 +22,6 @@ The simplest use case for this package is replacing one or more colors in an SVG
 This gulpfile will generate a new SVG, `plus--red.svg`, containing a red plus symbol in place of the blue symbol:
 
 ```javascript
-var Color = require("color");
 var gulp = require("gulp");
 var RecolorSvg = require("gulp-recolor-svg");
 var rename = require("gulp-rename");
@@ -30,8 +29,8 @@ var rename = require("gulp-rename");
 gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.Replace(
-			[ RecolorSvg.ColorMatcher(Color("blue")) ],
-			[ Color("red") ]
+			[ RecolorSvg.ColorMatcher(RecolorSvg.Color("blue")) ],
+			[ RecolorSvg.Color("red") ]
 		))
 		.pipe(rename({
 			suffix: "--red"
@@ -47,18 +46,17 @@ This package can also be used to easily generate multiple variants of an input i
 Given ``plus.svg``, this gulpfile will generate four SVGs: ``plus--hover.svg``, ``plus--active.svg``, ``plus--focus.svg``, and ``plus--disabled.svg``, each with a different colored plus symbol:
 
 ```javascript
-var Color = require("color");
 var gulp = require("gulp");
 var RecolorSvg = require("gulp-recolor-svg");
 
 gulp.task("default", function(){
 	gulp.src("plus.svg")
 		.pipe(RecolorSvg.GenerateVariants(
-			[ RecolorSvg.ColorMatcher(Color("blue")) ],
-			[ { suffix: "--hover", colors: [ Color("red") ] },
-				{ suffix: "--active", colors: [ Color("red").darken(0.1) ] },
-				{ suffix: "--focus", colors: [ Color("cyan") ] },
-				{ suffix: "--disabled", colors: [ Color("#ccc") ] } ]
+			[ RecolorSvg.ColorMatcher(RecolorSvg.Color("blue")) ],
+			[ { suffix: "--hover", colors: [ RecolorSvg.Color("red") ] },
+				{ suffix: "--active", colors: [ RecolorSvg.Color("red").darken(0.1) ] },
+				{ suffix: "--focus", colors: [ RecolorSvg.Color("cyan") ] },
+				{ suffix: "--disabled", colors: [ RecolorSvg.Color("#ccc") ] } ]
 		))
 		.pipe(gulp.dest("./"));
 });
@@ -81,7 +79,7 @@ Usage:
 ```javascript
 var RecolorSvg = require("gulp-recolor-svg");
 
-matcher = RecolorSvg.ColorMatcher(Color("red"), 2);
+matcher = RecolorSvg.ColorMatcher(RecolorSvg.Color("red"), 2);
 
 matcher(RecolorSvg.Color("red").lighten(0.02)); # returns true
 matcher(RecolorSvg.Color("blue")); # returns false
