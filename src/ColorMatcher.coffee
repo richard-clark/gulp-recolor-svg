@@ -6,8 +6,8 @@ convert = require("color-convert")
 # perceptable difference.
 colorDifference = (firstColor, secondColor) ->
   # for some reason, the firstColor is a Color object, and the second is not.
-  firstColorLabComponents = convert.rgb.lab.raw(firstColor.rgb().array())
-  secondColorLabComponents = convert.rgb.lab.raw(secondColor.rgb().array())
+  firstColorLabComponents = convert.rgb.lab.raw(Color(firstColor).rgb().array())
+  secondColorLabComponents = convert.rgb.lab.raw(Color(secondColor).rgb().array())
 
   sumOfDifferencesSqaured = firstColorLabComponents.map (value, index) ->
     value - secondColorLabComponents[index]
@@ -19,8 +19,7 @@ colorDifference = (firstColor, secondColor) ->
 
   return sumOfDifferencesSqaured ** 0.5
 
-module.exports = (colorToMatch, maxDifference = 0.1) ->
-
-  (color) ->
+module.exports = (colorToMatch, maxDifference = 0.1) -> (color) ->
     difference = colorDifference(colorToMatch, color)
+
     return difference <= maxDifference

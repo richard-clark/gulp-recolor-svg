@@ -9,11 +9,12 @@ Replace = (colorMatchers, colors) ->
   through.obj (file, encoding, callback) ->
     data = file.contents
     outputData = replaceColors(data, colorMatchers, colors)
-    outputFile = new File
+    outputFile = new File {
       cwd: file.cwd
       base: file.base
       path: file.path
       contents: new Buffer(outputData, "utf8")
+    }
     @push(outputFile)
     callback()
 

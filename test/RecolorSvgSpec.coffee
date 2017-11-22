@@ -1,12 +1,13 @@
 expect = require("chai").expect
 RecolorSvg = require("../src/RecolorSvg")
 File = require("vinyl")
+Color = require("color")
 
 wrapAsSvg = (text) ->
   '<?xml version="1.0" encoding="utf-8"?><svg>' + text + '</svg>'
 
 SimpleMatcher = (firstColor) ->
-  [r1, g1, b1] = firstColor.rgb().array()
+  [r1, g1, b1] = Color(firstColor).rgb().array()
   (secondColor) ->
     [r2, g2, b2] = secondColor.rgb().array()
     return r1 is r2 and g1 is g2 and b1 is b2
@@ -25,12 +26,13 @@ describe "RecolorSvg", () ->
   describe "Replace", () ->
 
     it "should replace an input color and emit a file", (done) ->
-      fakeFile = new File
+      fakeFile = new File {
         contents: new Buffer(wrapAsSvg('<path fill="red"/>'), "utf8")
+      }
 
       stream = RecolorSvg.Replace(
-        [SimpleMatcher(RecolorSvg.Color("red"))],
-        [RecolorSvg.Color("blue")]
+        [SimpleMatcher("red")],
+        ["blue"]
       )
       stream.write(fakeFile)
 
@@ -44,18 +46,22 @@ describe "RecolorSvg", () ->
   describe "GenerateVariants", () ->
 
     it "should replace an input color and emit multiple files", (done) ->
-      fakeFile = new File
+      fakeFile = new File {
         path: "foo/bar/baz.svg"
         contents: new Buffer(wrapAsSvg('<path fill="red"/>'), "utf8")
+      }
 
       stream = RecolorSvg.GenerateVariants(
-        [SimpleMatcher(RecolorSvg.Color("red"))],
+        [SimpleMatcher("red")],
         [
+          {
             suffix: "--lime"
-            colors: [RecolorSvg.Color("lime")]
-          ,
+            colors: ["lime"]
+          },
+          {
             suffix: "--blue"
-            colors: [RecolorSvg.Color("blue")]
+            colors: ["blue"]
+          }
         ]
       )
       stream.write(fakeFile)
